@@ -50,18 +50,33 @@ func showHelpAndExit() {
 	os.Exit(-1)
 }
 
-func parseDate(dateToParse string) (*time.Time, error) {
-	dateLayouts := []string{"15:04", "15:04:05", "2006-01-02T15:04:05.000Z"}
-
-	for _, layout := range dateLayouts {
-		t, err := time.Parse(layout, dateToParse)
+func tryDateFormats(userTimeValue string, dateFormats []string) (*time.Time, error) {
+	for _, layout := range dateFormats {
+		t, err := time.Parse(layout, userTimeValue)
 
 		if err == nil {
 			return &t, nil
 		}
 	}
 
-	return nil, errors.New("Unable to parse date: " + dateToParse)
+	return nil, errors.New("Unable to parse date: " + userTimeValue)
+}
+
+func parseDate(userTimeValue string) (*time.Time, error) {
+	var layouts = []string{"2006-01-02 15:04:05", "2006-01-02 15:04", "2006-01-02"}
+
+	parsedValue, err := tryDateFormats(userTimeValue, layouts)
+
+	if err == nil {
+		return parsedValue, nil
+	}
+
+	var currentTime = time.Now().Local()
+	var datePrefix = currentTime.Format("2006-01-02")
+
+	var userTimeValueWithPrefix = datePrefix + " " + userTimeValue
+
+	return tryDateFormats(userTimeValueWithPrefix, layouts)
 }
 
 func main() {
