@@ -51,8 +51,10 @@ func showHelpAndExit() {
 }
 
 func tryDateFormats(userTimeValue string, dateFormats []string) (*time.Time, error) {
+	var localLocation = time.Now().Local().Location()
+
 	for _, layout := range dateFormats {
-		t, err := time.Parse(layout, userTimeValue)
+		t, err := time.ParseInLocation(layout, userTimeValue, localLocation)
 
 		if err == nil {
 			return &t, nil
@@ -95,6 +97,10 @@ func parseDate(userTimeValue string) (*time.Time, error) {
 	return parsedValue, nil
 }
 
+func showAnimation() {
+
+}
+
 func main() {
 	flagErr := globalFlagSet.Parse(os.Args[1:])
 
@@ -116,4 +122,13 @@ func main() {
 	}
 
 	fmt.Printf("Wait until %s\n", *parseDate)
+
+	go showAnimation()
+
+	var currentTime = time.Now().Local()
+	var sleepTime = parseDate.Sub(currentTime)
+
+	fmt.Printf("Sleep time %f\n", sleepTime.Seconds())
+
+	time.Sleep(sleepTime)
 }
