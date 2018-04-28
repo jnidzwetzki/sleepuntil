@@ -20,27 +20,20 @@ var (
 	globalFlags = struct {
 		Verbose bool
 		Animate bool
-		Time    string
+		Help    bool
 	}{}
 )
 
 func init() {
 	globalFlagSet.BoolVar(&globalFlags.Verbose, "verbose", false, "Be verbose.")
-	globalFlagSet.BoolVar(&globalFlags.Animate, "animate", false, "Show an animation for the remaining time")
+	globalFlagSet.BoolVar(&globalFlags.Help, "help", false, "Show help.")
+	globalFlagSet.BoolVar(&globalFlags.Animate, "progress", false, "Show a progress animation for the remaining time.")
 }
 
 func showHelpAndExit() {
 	fmt.Printf("Usage: %s <time> <flags>\n\n", cliName)
 
-	myFlags := make([]*flag.Flag, 0)
-	globalFlagSet.VisitAll(func(f *flag.Flag) {
-		myFlags = append(myFlags, f)
-	})
-
-	fmt.Printf("Supported flags:\n")
-	for _, flag := range myFlags {
-		fmt.Printf("-%s (Default: %s) %s\n", flag.Name, flag.Value, flag.Usage)
-	}
+	globalFlagSet.PrintDefaults()
 
 	fmt.Printf("\n")
 	fmt.Printf("Version: %g\n", cliVersion)
@@ -102,9 +95,9 @@ func showAnimation() {
 }
 
 func main() {
-	flagErr := globalFlagSet.Parse(os.Args[1:])
+	flagErr := globalFlagSet.Parse(os.Args[2:])
 
-	if flagErr != nil {
+	if flagErr != nil || globalFlags.Help {
 		showHelpAndExit()
 	}
 
