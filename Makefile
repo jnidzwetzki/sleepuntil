@@ -10,7 +10,7 @@ lint:
 	golint ./src
 
 .PHONY: test
-test:
+test: build
 	go test ./src/...
 
 .PHONY: clean
