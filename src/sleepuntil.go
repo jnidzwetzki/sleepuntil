@@ -7,8 +7,6 @@ import (
 	"log"
 	"os"
 	"time"
-
-	"./terminalutil"
 )
 
 const (
@@ -94,7 +92,7 @@ func parseDate(userTimeValue string) (*time.Time, error) {
 }
 
 func showAnimation() {
-	_, err := terminalutil.GetWidth()
+	_, err := getTeminalWidth()
 
 	if err != nil {
 		log.Fatal("Got error while running animation")

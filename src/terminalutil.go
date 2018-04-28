@@ -1,4 +1,4 @@
-package terminalutil
+package main
 
 import (
 	"os"
@@ -7,7 +7,7 @@ import (
 )
 
 // Result is: 30 130
-func determineSize() (string, error) {
+func determineTerminalSizeRaw() (string, error) {
 	cmd := exec.Command("stty", "size")
 	cmd.Stdin = os.Stdin
 	out, err := cmd.Output()
@@ -18,8 +18,8 @@ func determineSize() (string, error) {
 }
 
 // GetWidth returns the width of the terminal
-func GetWidth() (int, error) {
-	commandOutput, err := determineSize()
+func getTeminalWidth() (int, error) {
+	commandOutput, err := determineTerminalSizeRaw()
 
 	if err != nil {
 		return 0, err

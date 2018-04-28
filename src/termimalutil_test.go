@@ -1,12 +1,12 @@
-package terminalutil
+package main
 
 import "testing"
 
 func TestGetTerminalDataRaw(t *testing.T) {
-	data, err := determineSize()
+	data, err := determineTerminalSizeRaw()
 
 	if len(data) <= 0 {
-		//t.Error("Got null length")
+		//	t.Error("Got null length: " + data)
 	}
 
 	if err != nil {
