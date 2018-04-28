@@ -1,10 +1,9 @@
-GO_SOURCES := $(shell find src -type f -name "*.go")
-
 default: build
 
 .PHONY: build
 build:
-	go build -v -o ./bin/sleepuntil $(GO_SOURCES)
+#	cd src/terminalutil; go build -v 
+	cd src; go build -v -o ../bin/sleepuntil 
 
 .PHONY: lint
 lint:

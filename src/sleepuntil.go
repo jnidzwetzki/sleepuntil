@@ -4,8 +4,11 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"time"
+
+	"./terminalutil"
 )
 
 const (
@@ -91,6 +94,11 @@ func parseDate(userTimeValue string) (*time.Time, error) {
 }
 
 func showAnimation() {
+	_, err := terminalutil.GetWidth()
+
+	if err != nil {
+		log.Fatal("Got error while running animation")
+	}
 
 }
 
