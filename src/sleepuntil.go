@@ -92,12 +92,13 @@ func parseDate(userTimeValue string) (*time.Time, error) {
 }
 
 func showAnimation() {
-	_, err := getTeminalWidth()
+	width, err := getTeminalWidth()
 
 	if err != nil {
 		log.Fatal("Got error while running animation")
 	}
 
+	fmt.Printf("Terminal width is: %d\n", width)
 }
 
 func main() {
@@ -107,22 +108,23 @@ func main() {
 		showHelpAndExit()
 	}
 
-	var args = globalFlagSet.Args()
-
-	if len(args) < 1 {
+	if len(os.Args) < 1 {
 		showHelpAndExit()
 	}
 
-	parseDate, err := parseDate(args[0])
+	dateToParse := os.Args[1]
+	parseDate, err := parseDate(dateToParse)
 
 	if err != nil {
-		fmt.Printf("Unable to parse %s, exiting\n", args[0])
+		fmt.Printf("Unable to parse %s, exiting\n", dateToParse)
 		os.Exit(-1)
 	}
 
 	fmt.Printf("Wait until %s\n", *parseDate)
 
-	go showAnimation()
+	if globalFlags.Animate {
+		go showAnimation()
+	}
 
 	var currentTime = time.Now().Local()
 	var sleepTime = parseDate.Sub(currentTime)
