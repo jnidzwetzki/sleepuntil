@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"os"
 	"os/exec"
-	"strings"
+	"regexp"
+	"strconv"
 )
 
 // Result is: 30 130
@@ -17,6 +20,36 @@ func determineTerminalSizeRaw() (string, error) {
 	return commandOutput, err
 }
 
+// Parse: 30 130
+func parseTerminalSizeRaw(sizeRaw string) (int, int, error) {
+	regex, err := regexp.Compile(`(\d+) (\d+)`)
+
+	if err != nil {
+		log.Fatalf("Got exception while compiling regex %s\n", err)
+		os.Exit(-1)
+	}
+
+	result := regex.FindStringSubmatch(sizeRaw)
+
+	if len(result) != 3 {
+		return -1, -1, fmt.Errorf("The array has not three elements: %s", result)
+	}
+
+	width, err := strconv.Atoi(result[1])
+
+	if err != nil {
+		return -1, -1, err
+	}
+
+	height, err := strconv.Atoi(result[2])
+
+	if err != nil {
+		return -1, -1, err
+	}
+
+	return width, height, nil
+}
+
 // GetWidth returns the width of the terminal
 func getTeminalWidth() (int, error) {
 	commandOutput, err := determineTerminalSizeRaw()
@@ -25,7 +58,7 @@ func getTeminalWidth() (int, error) {
 		return 0, err
 	}
 
-	strings.Split(commandOutput, " ")
+	width, _, err := parseTerminalSizeRaw(commandOutput)
 
-	return 0, nil
+	return width, err
 }
