@@ -43,14 +43,36 @@ func showHelpAndExit() {
 	os.Exit(-1)
 }
 
-func showAnimation() {
+// Print a wait animation
+func showAnimation(startTime time.Time, sleepTime time.Duration) {
 	width, err := getTeminalWidth()
 
 	if err != nil {
 		log.Fatal("Got error while running animation")
 	}
 
-	fmt.Printf("Terminal width is: %d\n", width)
+	for {
+		var currentTime = time.Now().Local()
+		elapsedTime := currentTime.Sub(startTime)
+		percent := sleepTime.Seconds() / elapsedTime.Seconds()
+
+		fmt.Print("\r")
+		fmt.Print("|")
+
+		elementsToPrint := width - 10
+
+		for i := 0; i < elementsToPrint; i++ {
+			if (float64(elementsToPrint) / float64(i)) < percent {
+				fmt.Print("-")
+			} else {
+				fmt.Print("*")
+			}
+		}
+
+		fmt.Print("|")
+		time.Sleep(1 * time.Second)
+	}
+
 }
 
 func main() {
@@ -72,16 +94,18 @@ func main() {
 		os.Exit(-1)
 	}
 
-	if globalFlags.Animate {
-		go showAnimation()
-	}
-
 	var currentTime = time.Now().Local()
 	var sleepTime = parseDate.Sub(currentTime)
+
+	if globalFlags.Animate {
+		go showAnimation(currentTime, sleepTime)
+	}
 
 	if globalFlags.Verbose {
 		fmt.Printf("Sleep time %f\n", sleepTime.Seconds())
 	}
 
 	time.Sleep(sleepTime)
+
+	fmt.Println("")
 }

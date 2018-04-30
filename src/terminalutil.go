@@ -35,13 +35,13 @@ func parseTerminalSizeRaw(sizeRaw string) (int, int, error) {
 		return -1, -1, fmt.Errorf("The array has not three elements: %s", result)
 	}
 
-	width, err := strconv.Atoi(result[1])
+	height, err := strconv.Atoi(result[1])
 
 	if err != nil {
 		return -1, -1, err
 	}
 
-	height, err := strconv.Atoi(result[2])
+	width, err := strconv.Atoi(result[2])
 
 	if err != nil {
 		return -1, -1, err
