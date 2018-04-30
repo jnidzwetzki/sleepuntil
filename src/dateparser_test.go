@@ -4,7 +4,7 @@ import "testing"
 
 func testDateParsin(t *testing.T) {
 	date1 := "12:00:12"
-	date2 := "2006-01-02 15:04:05"
+	date2 := "2006-01-02 15:04"
 	date3 := "2006-01-02 15:04:05"
 
 	dates := []string{date1, date2, date3}
