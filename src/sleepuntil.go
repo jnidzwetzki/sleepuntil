@@ -72,8 +72,6 @@ func main() {
 		os.Exit(-1)
 	}
 
-	fmt.Printf("Wait until %s\n", *parseDate)
-
 	if globalFlags.Animate {
 		go showAnimation()
 	}
@@ -81,7 +79,9 @@ func main() {
 	var currentTime = time.Now().Local()
 	var sleepTime = parseDate.Sub(currentTime)
 
-	fmt.Printf("Sleep time %f\n", sleepTime.Seconds())
+	if globalFlags.Verbose {
+		fmt.Printf("Sleep time %f\n", sleepTime.Seconds())
+	}
 
 	time.Sleep(sleepTime)
 }
