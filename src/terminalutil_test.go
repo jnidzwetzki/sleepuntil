@@ -10,11 +10,11 @@ func TestGetTerminalDataRaw1(t *testing.T) {
 		t.Errorf("Got exception: %s\n", err.Error())
 	}
 
-	if width != 10 {
+	if width != 20 {
 		t.Errorf("Got wrong length: %d", width)
 	}
 
-	if height != 20 {
+	if height != 10 {
 		t.Errorf("Got wrong height: %d", height)
 	}
 
@@ -28,11 +28,11 @@ func TestGetTerminalDataRaw2(t *testing.T) {
 		t.Errorf("Got exception: %s\n", err.Error())
 	}
 
-	if width != 10 {
+	if width != 20 {
 		t.Errorf("Got wrong length: %d", width)
 	}
 
-	if height != 20 {
+	if height != 10 {
 		t.Errorf("Got wrong height: %d", height)
 	}
 
