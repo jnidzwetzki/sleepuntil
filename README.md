@@ -5,6 +5,23 @@ This program acts as the famous ``sleep`` unix command. The main difference is, 
 
 ``sleepuntil`` was written to take over simple jobs in maintenance work (e.g., shutdown the mysql server at 06:00 am).
 
+## Usage
+```bash
+$ ./sleepuntil -help
+
+Usage: sleepuntil <time> <flags>
+
+  -help
+    	Show help.
+  -progress
+    	Show a progress animation for the remaining time.
+  -verbose
+    	Be verbose.
+
+Version: 0.1
+Please report bugs here: https://github.com/jnidzwetzki/sleepuntil/issues
+```
+
 ## Examples
 __Note:__ You should use the ``&&`` operator to schedule commands. In contrast to ``;``, the next command is only executed if the execution of the previous command (``sleepuntil``) was successful. The ``;`` operator executes the next command in any case. When a wrong date format was specified (or a date in the past) the execution of ``sleepuntil`` fails. When ``;`` is used, the next command is executed immediately, when ``&&`` is used, the next command is not executed.
 
