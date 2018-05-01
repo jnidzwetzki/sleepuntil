@@ -91,7 +91,8 @@ func main() {
 
 	if err != nil {
 		fmt.Printf("Unable to parse %s, exiting\n", dateToParse)
-		os.Exit(-1)
+		fmt.Println("")
+		showHelpAndExit()
 	}
 
 	var currentTime = time.Now().Local()
