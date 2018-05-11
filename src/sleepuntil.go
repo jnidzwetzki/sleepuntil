@@ -17,6 +17,8 @@ const (
 var (
 	globalFlagSet = flag.NewFlagSet("sleepuntil", flag.ExitOnError)
 
+	animationFinish = make(chan int)
+
 	globalFlags = struct {
 		Verbose bool
 		Animate bool
@@ -54,6 +56,7 @@ func showAnimation(startTime time.Time, sleepTime time.Duration) {
 	for {
 		var currentTime = time.Now().Local()
 		elapsedTime := currentTime.Sub(startTime)
+
 		percent := sleepTime.Seconds() / elapsedTime.Seconds()
 
 		fmt.Print("\r")
@@ -70,9 +73,15 @@ func showAnimation(startTime time.Time, sleepTime time.Duration) {
 		}
 
 		fmt.Print("|")
+
+		if elapsedTime > sleepTime {
+			break
+		}
+
 		time.Sleep(1 * time.Second)
 	}
 
+	animationFinish <- 1
 }
 
 func main() {
@@ -107,6 +116,10 @@ func main() {
 	}
 
 	time.Sleep(sleepTime)
+
+	if globalFlags.Animate {
+		<-animationFinish
+	}
 
 	fmt.Println("")
 }
